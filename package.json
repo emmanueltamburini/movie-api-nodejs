@@ -1,0 +1,22 @@
+{
+  "name": "movie-api-nodejs",
+  "version": "1.0.0",
+  "description": "Movie api with node.js, koa.js and mongoDB",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "keywords": [
+    "node",
+    "koa",
+    "mongoDB",
+    "api",
+    "REST"
+  ],
+  "author": "Emmanuel Tamburini",
+  "license": "ISC",
+  "dependencies": {
+    "koa": "^2.13.4",
+    "mongodb": "^4.3.0"
+  }
+}
