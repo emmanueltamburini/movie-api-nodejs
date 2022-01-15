@@ -1,3 +1,5 @@
+const client = require("./dal");
+
 const koa = require('koa');
 const app = new koa();
 
