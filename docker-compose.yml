@@ -1,0 +1,27 @@
+version: "3.9"
+
+services:
+  web:
+    build: .
+    depends_on:
+      - db
+    ports:
+      - 3000:3000
+    environment:
+      API_KEY: aa94d04f
+      MONGO_URI: mongodb://db:27017/details
+    volumes:
+      - .:/opt/app
+      - /opt/app/node_modules
+    links:
+      - db
+    restart: on-failure
+  db:
+    image: mongo:4.4.11
+    restart: always
+    volumes:
+      - mongodata:/data/db
+
+volumes:
+  mongodata:
+    

@@ -1,5 +1,6 @@
 const MOVIE_NOT_FOUND = 'Movie has not been found';
 const MONGO_DB_CONNECTION = "MongoDB database connection established successfully";
+const MONGO_DB_CONNECTION_TRYING = (uri) => `Trying to connect to ${uri} ...`;
 
 const NUMBER_BASE_TEXT = (attr) => `${attr} must be a number`;
 const STRING_BASE_TEXT = (attr) => `${attr} must be a text`;
@@ -16,6 +17,7 @@ const REPLACE = "Replace";
 module.exports = {
     MOVIE_NOT_FOUND,
     MONGO_DB_CONNECTION,
+    MONGO_DB_CONNECTION_TRYING,
     NUMBER_BASE_TEXT,
     STRING_BASE_TEXT,
     ANY_REQUIRED_TEXT,

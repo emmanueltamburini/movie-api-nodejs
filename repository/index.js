@@ -1,10 +1,12 @@
 const mongoose = require("mongoose");
 const {OPEN} = require("../constant/repository");
-const {MONGO_DB_CONNECTION} = require("../constant/messages");
+const {MONGO_DB_CONNECTION, MONGO_DB_CONNECTION_TRYING } = require("../constant/messages");
+const dotenv = require('dotenv')
+dotenv.config();
 
-var uri = "mongodb://localhost:27017/details";
-
-mongoose.connect(uri, { useUnifiedTopology: true, useNewUrlParser: true });
+const URI = process.env.MONGO_URI;
+console.log(MONGO_DB_CONNECTION_TRYING(URI))
+mongoose.connect(URI, { useUnifiedTopology: true, useNewUrlParser: true });
 
 const connection = mongoose.connection;
 

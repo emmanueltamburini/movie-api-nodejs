@@ -3,8 +3,6 @@ const koa = require('koa');
 const logger = require('koa-logger');
 const swagger = require("swagger2");
 const { ui } = require("swagger2-koa");
-const dotenv = require('dotenv')
-dotenv.config();
 
 const swaggerDocument = swagger.loadDocumentSync("api.yaml");
 const app = new koa();
