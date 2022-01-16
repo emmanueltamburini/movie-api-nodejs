@@ -16,7 +16,12 @@
   "author": "Emmanuel Tamburini",
   "license": "ISC",
   "dependencies": {
-    "koa": "^2.13.4",
+    "@koa/router": "^10.0.0",
+    "koa": "^2.13.1",
     "mongodb": "^4.3.0"
+  },
+  "devDependencies": {
+    "koa-bodyparser": "^4.3.0",
+    "uuid": "^8.3.2"
   }
 }

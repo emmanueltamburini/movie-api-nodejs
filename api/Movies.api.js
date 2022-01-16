@@ -1,4 +1,4 @@
-const {getMovie, getAllMovie, searchAndUpdateByTitle} = require("./service/Movies.service.js");
+const {getMovie, getAllMovie, searchAndUpdateByTitle} = require("../service/Movie.service");
 
 const getMovieAPI = async (title, year) => {
     return getMovie(title, year);

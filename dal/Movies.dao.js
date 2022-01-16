@@ -9,7 +9,7 @@ const save = async ({title, year, released, genre, director, actors, plot, ratin
 const getAll = async (page) => {
     const limit = 5;
     const startIndex = (page - 1) * limit;
-    const allMovies = await movies.find().skip(startIndex).limit(limit).sort(["id", 1]).pretty();
+    const allMovies = await movies.find().skip(startIndex).limit(limit).sort(["id", 1]);
 
     return allMovies.toArray();
 }

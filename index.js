@@ -2,10 +2,12 @@ const client = require("./dal");
 
 const koa = require('koa');
 const app = new koa();
+const bodyParser = require('koa-bodyparser');
+const moviesRouter = require('./routes/Movies.routes')
 
-app.use(ctx => {
-    ctx.body = "Welcome to koa"
-});
+app.use(bodyParser());
+
+app.use(moviesRouter.routes()).use(moviesRouter.allowedMethods());
 
 app.listen(3000);
 

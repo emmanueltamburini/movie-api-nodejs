@@ -1,5 +1,5 @@
-const {save, getAll, getByTitleAndYear, updateByTitle} = require("./dal/Movies.dao.js");
-const {Movie} = require("./models/Movies.models.js");
+const {save, getAll, getByTitleAndYear, updateByTitle} = require("../dal/Movies.dao.js");
+const {Movie} = require("../models/Movies.models.js");
 
 const getMovie = async (title, year) => {
     const movieResponse = await getByTitleAndYear(title, year);
@@ -23,9 +23,12 @@ const getAllMovie = async (page) => {
 const searchAndUpdateByTitle = async (movie, find, replace) => {
     const movieResponse = await getByTitleAndYear(movie, null);
     var regex = new RegExp(replace, "g");
-    movieResponse.plot = movieResponse.plot.replace(regex, find); 
+    if (movieResponse) {
+        movieResponse.plot = movieResponse.plot.replace(regex, find); 
+        return updateByTitle(movie, movieResponse)
+    }
 
-    return updateByTitle(movie, movieResponse)
+    return null;
 }
 
 module.exports = {getMovie, getAllMovie, searchAndUpdateByTitle};
