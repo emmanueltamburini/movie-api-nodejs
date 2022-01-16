@@ -10,6 +10,7 @@ module.exports = async ctx => {
         if(err.isJoi) {
             ctx.response.status = 422;
             ctx.body = err.message;
+            return;
         }
         ctx.response.status = 500;
         ctx.body = err.message;

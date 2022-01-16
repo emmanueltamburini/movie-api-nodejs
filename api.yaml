@@ -1,0 +1,179 @@
+swagger: "2.0"
+info:
+  title: "Movie api documentation"
+  description: >
+    Movie api description.
+  version: "1.0.0"
+host: "localhost:3000"
+schemes:
+  - "http"
+
+paths:
+  /movies/{title}:
+    get:
+      summary: "Look for the requested movie in the database and the omdbapi api"
+      description: "If the movie is found in the current database, the enpoint returns that movie. If the movie is not in the database, the endpoint will search the omdbapi api, save it in the database and return it. If it is not in the current base, nor in the omdbapi api will it return a message indicating that it was not achieved."
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: path
+          name: title
+          schema:
+            type: "string"
+          required: true
+          description: Movie title
+          example: Star Wars
+        - in: header
+          name: year
+          schema:
+            type: "number"
+          required: false
+          description: Movie year
+          example: 1977
+      responses:
+        200:
+          $ref: '#/responses/getElement200'
+        404:
+          $ref: '#/responses/getElement404'
+        422:
+          $ref: '#/responses/422'
+        500:
+          $ref: '#/responses/500'
+
+  /movies:
+    get:
+      summary: "Look for the all movies in database"
+      description: "Check out all movies in data base, if there are more than five movies, the api response will come paginated"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: header
+          name: page
+          schema:
+            type: "number"
+          required: false
+          description: Paginate page
+          example: 1
+      responses:
+        200:
+          $ref: '#/responses/getAllElement200'
+        422:
+          $ref: '#/responses/422'
+        500:
+          $ref: '#/responses/500'
+
+    post:
+      summary: "Look for the requested movie in the database and replace a specific phrase in plot field"
+      description: "Check out in all movies in data base for the requested movie, if it has been found, it will replace all phrases of 'find' attribute in the body of the endpoint for the phrase of the other attribute 'answers' in the 'plot' field in data base"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: body
+          name: movie
+          schema:
+            type: "string"
+          required: true
+          description: Title of the movie you want to be found
+          example: star wars
+        - in: body
+          name: find
+          schema:
+            type: "string"
+          required: true
+          description: Pharse that you are looking for
+          example: jedi
+        - in: body
+          name: replace
+          schema:
+            type: "string"
+          required: true
+          description: Pharse that you want to replace
+          example: CLM Dev
+      responses:
+        200:
+          $ref: '#/responses/replaceElement200'
+        404:
+          $ref: '#/responses/getElement404'
+        422:
+          $ref: '#/responses/422'
+        500:
+          $ref: '#/responses/500'
+
+responses:
+  getElement200:
+    description: "Movie has been found"
+    schema:
+      $ref: '#/definitions/Movie'
+
+  getElement404:
+    description: "Movie has not been found"
+    schema:
+      $ref: '#/definitions/NotMovie'
+
+  getAllElement200:
+    description: "All movies answer"
+    schema:
+      $ref: '#/definitions/AllMovies'
+  
+  replaceElement200:
+    description: "Field has been changed"
+    schema:
+      $ref: '#/definitions/Movie'
+
+  422:
+    description: "Unprocessable Entity, some error in parameters"
+    schema:
+      $ref: '#/definitions/BadParameters'
+
+  500:
+    description: "Internal Server Error"
+    schema:
+      $ref: '#/definitions/Error'
+
+
+definitions:
+  Movie:
+    type: "object"
+    properties:
+      _id:
+        type: "string"
+      title:
+        type: "string"
+      year:
+        type: "string"
+      released:
+        type: "string"
+      genre:
+        type: "string"
+      director:
+        type: "string"
+      actors:
+        type: "string"
+      plot:
+        type: "string"
+      ratings:
+        type: "array"
+        items:
+          type: "string"
+      __v:
+        type: "string"
+
+  AllMovies:
+    type: "array"
+    items:
+      $ref: '#/definitions/Movie'
+
+  NotMovie:
+    type: "string"
+
+  BadParameters:
+    type: "string"
+
+  Error:
+    type: "string"

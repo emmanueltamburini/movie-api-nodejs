@@ -28,7 +28,7 @@ const getMovie = async (title, year) => {
         return save({...movie});
     }
     
-    return 'Movie has not been found';
+    return null;
 }
 
 const getAllMovie = async (page) => {
@@ -42,7 +42,7 @@ const searchAndUpdateByTitle = async (movie, find, replace) => {
         return updateByTitle(movie, movieResponse.plot.replace(regex, replace));
     }
 
-    return 'Movie has not been found';
+    return null;
 }
 
 module.exports = {getMovie, getAllMovie, searchAndUpdateByTitle};

@@ -1,7 +1,10 @@
 const client = require("./repository");
 const koa = require('koa');
-let logger = require('koa-logger');
+const logger = require('koa-logger');
+const swagger = require("swagger2");
+const { ui, validate } = require("swagger2-koa");
 
+const swaggerDocument = swagger.loadDocumentSync("api.yaml");
 const app = new koa();
 const bodyParser = require('koa-bodyparser');
 const moviesRouter = require('./controller/Movies.controller')
@@ -12,7 +15,7 @@ app.use(logger((str, args) => {
 
 app.use(bodyParser());
 
-app.use(moviesRouter.routes()).use(moviesRouter.allowedMethods());
+app.use(ui(swaggerDocument, "/swagger")).use(moviesRouter.routes()).use(moviesRouter.allowedMethods());
 
 app.listen(3000);
 

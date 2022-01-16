@@ -20,9 +20,11 @@
     "@koa/router": "^10.0.0",
     "joi": "^17.5.0",
     "koa": "^2.13.1",
+    "koa-logger": "^3.2.1",
     "mongoose": "^6.1.6",
     "node-fetch": "2.0",
-    "koa-logger": "^3.2.1"
+    "swagger2": "^3.0.0",
+    "swagger2-koa": "^3.0.0"
   },
   "devDependencies": {
     "koa-bodyparser": "^4.3.0",
