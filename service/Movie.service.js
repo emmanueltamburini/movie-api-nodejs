@@ -1,5 +1,7 @@
 const {save, getAll, getByTitleAndYear, updateByTitle} = require("../dal/Movies.dao.js");
-const {Movie} = require("../models/Movies.models.js");
+const Movie = require("../models/Movies.models.js");
+const fetch = require("node-fetch");
+const API_KEY = "aa94d04f";
 
 const getMovie = async (title, year) => {
     const movieResponse = await getByTitleAndYear(title, year);
@@ -8,27 +10,40 @@ const getMovie = async (title, year) => {
         return movieResponse;
     }
 
-    // TODO add api from movies
+    const urlYear = year ? `&y=${year}` : ''
+    const response = await fetch(`http://www.omdbapi.com/?t=${title}${urlYear}&apikey=${API_KEY}`);
+    const body = await response.json();
 
-    const movieFromApi = movieResponse;
+    if (response.status === 200 && body.Response === "True") {
+        const movie = new Movie({
+            title: body.Title,
+            year: body.Year,
+            released: body.Released,
+            genre: body.Genre,
+            director: body.Director,
+            actors: body.Actors,
+            plot: body.Plot,
+            ratings: body.Ratings,
+        });
 
-    return movieFromApi;
+        return save({...movie});
+    }
+    
+    return 'Movie has not been found';
 }
 
 const getAllMovie = async (page) => {
     return getAll(page);
 }
 
-
 const searchAndUpdateByTitle = async (movie, find, replace) => {
     const movieResponse = await getByTitleAndYear(movie, null);
-    var regex = new RegExp(replace, "g");
+    var regex = new RegExp(find, "g");
     if (movieResponse) {
-        movieResponse.plot = movieResponse.plot.replace(regex, find); 
-        return updateByTitle(movie, movieResponse)
+        return updateByTitle(movie, movieResponse.plot.replace(regex, replace));
     }
 
-    return null;
+    return 'Movie has not been found';
 }
 
 module.exports = {getMovie, getAllMovie, searchAndUpdateByTitle};

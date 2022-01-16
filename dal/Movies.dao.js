@@ -2,8 +2,7 @@ const movies = require('./index').db('store').collection('movies');
 
 const save = async ({title, year, released, genre, director, actors, plot, ratings}) => {
     const result = await movies.insertOne({title, year, released, genre, director, actors, plot, ratings});
-
-    return result.ops[0];
+    return getById(result.insertedId);
 }
 
 const getAll = async (page) => {
@@ -14,13 +13,27 @@ const getAll = async (page) => {
     return allMovies.toArray();
 }
 
+const getById = async (id) => {
+    return movies.findOne({_id: id});
+}
+
 const getByTitleAndYear = async (title, year) => {
-    return movies.findOne({title: title, year: year});
+    var regex = new RegExp(title, "i");
+
+    if (year) {
+        return movies.findOne({title: regex, year: year});
+    }
+
+    return movies.findOne({title: regex});
 }
 
-const updateByTitle = async (titleSearch, {title, year, released, genre, director, actors, plot, ratings}) => { 
-    const result = await movies.replaceOne({title: titleSearch}, {title, year, released, genre, director, actors, plot, ratings})
-    return result.ops[0];
+const updateByTitle = async (titleSearch, plot) => { 
+    var regex = new RegExp(titleSearch, "i");
+    const response = await movies.findOneAndUpdate({title: regex},
+        [
+            { $set: { plot: plot } }
+        ]);
+    return response.value;
 }
 
-module.exports = {save, getAll, getByTitleAndYear, updateByTitle};
+module.exports = {save, getAll, getById, getByTitleAndYear, updateByTitle};

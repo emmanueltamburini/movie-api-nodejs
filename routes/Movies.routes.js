@@ -1,5 +1,5 @@
 const Router = require("@koa/router");
-const {getMovieAPI, getAllMovieAPI, searchAndUpdateByTitleAPI} = require("../api/Movies.api.js");
+const {getMovie, getAllMovie, searchAndUpdateByTitle} = require("../service/Movie.service");
 
 const router = new Router({
     prefix: "/movies"
@@ -8,18 +8,17 @@ const router = new Router({
 router.get('/:title', async (req, res, next) => {
     const title = req.params.title;
     const year = req.get('year');
-    console.log(title, year);
-    req.body = await getMovieAPI(title, year);
+    req.body = await getMovie(title, year);
 })
 
 router.get('/', async (req, res, next) => {
     const page = req.get('page');
-    req.body = await getAllMovieAPI(page ? page : 1);
+    req.body = await getAllMovie(page ? page : 1);
 })
 
 router.post('/', async (req, res, next) => {
     const body = req.request.body;
-    req.body = await searchAndUpdateByTitleAPI(body.movie, body.find, body.replace);
+    req.body = await searchAndUpdateByTitle(body.movie, body.find, body.replace);
 })
 
 module.exports = router;
