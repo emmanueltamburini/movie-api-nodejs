@@ -11,5 +11,7 @@ module.exports = async ctx => {
             ctx.response.status = 422;
             ctx.body = err.message;
         }
+        ctx.response.status = 500;
+        ctx.body = err.message;
     }
 }
