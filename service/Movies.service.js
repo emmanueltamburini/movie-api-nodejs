@@ -1,6 +1,9 @@
 const {save, getAll, getByTitleAndYear, updateByTitle} = require("../repository/Movies.repository.js");
 const fetch = require("node-fetch");
-const API_KEY = "aa94d04f";
+const {GLOBAL_SEARCH} = require("../constant/regex");
+const {OMDB_API, TRUE} = require("../constant/service");
+
+const API_KEY = process.env.API_KEY;
 
 const getMovie = async (title, year) => {
     const movieResponse = await getByTitleAndYear(title, year);
@@ -9,11 +12,10 @@ const getMovie = async (title, year) => {
         return movieResponse;
     }
 
-    const urlYear = year ? `&y=${year}` : ''
-    const response = await fetch(`http://www.omdbapi.com/?t=${title}${urlYear}&apikey=${API_KEY}`);
+    const response = await fetch(OMDB_API(title, year, API_KEY));
     const body = await response.json();
 
-    if (response.status === 200 && body.Response === "True") {
+    if (response.status === 200 && body.Response === TRUE) {
         const movie = {
             title: body.Title,
             year: body.Year,
@@ -37,7 +39,7 @@ const getAllMovie = async (page) => {
 
 const searchAndUpdateByTitle = async (movie, find, replace) => {
     const movieResponse = await getByTitleAndYear(movie, null);
-    var regex = new RegExp(find, "g");
+    var regex = new RegExp(find, GLOBAL_SEARCH);
     if (movieResponse) {
         return updateByTitle(movie, movieResponse.plot.replace(regex, replace));
     }

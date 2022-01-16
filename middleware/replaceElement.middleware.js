@@ -1,5 +1,7 @@
 const Validator = require('../schemas/replaceElement.schema');
 const {searchAndUpdateByTitle} = require("../service/Movies.service");
+const {MOVIE_NOT_FOUND} = require("../constant/messages");
+const {INTERNAL_SERVER_ERROR_CODE, UNPROCESSABLE_ENTITY_CODE, NOT_FOUND_CODE} = require("../constant/codeResponse");
 
 module.exports = async ctx => {
     try {
@@ -7,16 +9,16 @@ module.exports = async ctx => {
         await Validator.validateAsync(body);
         ctx.body = await searchAndUpdateByTitle(body.movie, body.find, body.replace);
         if (!ctx.body) {
-            ctx.body = 'Movie has not been found';
-            ctx.response.status = 404;
+            ctx.body = MOVIE_NOT_FOUND;
+            ctx.response.status = NOT_FOUND_CODE;
         } 
     } catch (err) {
         if(err.isJoi) {
-            ctx.response.status = 422;
+            ctx.response.status = UNPROCESSABLE_ENTITY_CODE;
             ctx.body = err.message;
             return;
         }
-        ctx.response.status = 500;
+        ctx.response.status = INTERNAL_SERVER_ERROR_CODE;
         ctx.body = err.message;
     }
 }

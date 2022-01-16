@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const {MOVIE_MODEL, MOVIES_COLLECTION} = require("../constant/models");
 
 const Schema = mongoose.Schema;
 
@@ -29,8 +30,8 @@ let movie = new Schema(
         type: Array
     }
   },
-  { collection: "Movies" }
+  { collection: MOVIES_COLLECTION }
 );
 
 
-module.exports = mongoose.model("movie", movie);
+module.exports = mongoose.model(MOVIE_MODEL, movie);

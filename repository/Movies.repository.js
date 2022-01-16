@@ -1,4 +1,6 @@
 const movies = require("../models/Movies");
+const {IGNORE_CASE_SEARCH} = require("../constant/regex");
+const {PAGE_LIMIT} = require("../constant/repository");
 
 const save = async ({title, year, released, genre, director, actors, plot, ratings}) => {
     return movies.create({
@@ -14,13 +16,13 @@ const save = async ({title, year, released, genre, director, actors, plot, ratin
 }
 
 const getAll = async (page) => {
-    const limit = 5;
+    const limit = PAGE_LIMIT;
     const startIndex = (page - 1) * limit;
     return movies.find().skip(startIndex).limit(limit);
 }
 
 const getByTitleAndYear = async (title, year) => {
-    var regex = new RegExp(title, "i");
+    var regex = new RegExp(title, IGNORE_CASE_SEARCH);
 
     if (year) {
         return movies.findOne({title: regex, year: year});
@@ -30,7 +32,7 @@ const getByTitleAndYear = async (title, year) => {
 }
 
 const updateByTitle = async (titleSearch, plot) => { 
-    var regex = new RegExp(titleSearch, "i");
+    var regex = new RegExp(titleSearch, IGNORE_CASE_SEARCH);
     return movies.findOneAndUpdate({title: regex},
         [
             { $set: { plot: plot } }
