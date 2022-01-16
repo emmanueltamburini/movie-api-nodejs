@@ -1,24 +1,14 @@
 const Router = require("@koa/router");
-const {getMovie, getAllMovie, searchAndUpdateByTitle} = require("../service/Movies.service");
+const {getAllElement, getElement, replaceElement} = require("../midleware");
 
 const router = new Router({
     prefix: "/movies"
 });
 
-router.get('/:title', async (req, res, next) => {
-    const title = req.params.title;
-    const year = req.get('year');
-    req.body = await getMovie(title, year);
-})
+router.get('/:title', getElement);
 
-router.get('/', async (req, res, next) => {
-    const page = req.get('page');
-    req.body = await getAllMovie(page ? page : 1);
-})
+router.get('/', getAllElement);
 
-router.post('/', async (req, res, next) => {
-    const body = req.request.body;
-    req.body = await searchAndUpdateByTitle(body.movie, body.find, body.replace);
-})
+router.post('/', replaceElement);
 
 module.exports = router;
