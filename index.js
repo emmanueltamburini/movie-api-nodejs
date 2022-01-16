@@ -1,9 +1,9 @@
-const client = require("./dal");
+const client = require("./repository");
 
 const koa = require('koa');
 const app = new koa();
 const bodyParser = require('koa-bodyparser');
-const moviesRouter = require('./routes/Movies.routes')
+const moviesRouter = require('./api/Movies.api')
 
 app.use(bodyParser());
 

@@ -1,5 +1,4 @@
-const {save, getAll, getByTitleAndYear, updateByTitle} = require("../dal/Movies.dao.js");
-const Movie = require("../models/Movies.models.js");
+const {save, getAll, getByTitleAndYear, updateByTitle} = require("../repository/Movies.repository.js");
 const fetch = require("node-fetch");
 const API_KEY = "aa94d04f";
 
@@ -15,7 +14,7 @@ const getMovie = async (title, year) => {
     const body = await response.json();
 
     if (response.status === 200 && body.Response === "True") {
-        const movie = new Movie({
+        const movie = {
             title: body.Title,
             year: body.Year,
             released: body.Released,
@@ -24,7 +23,7 @@ const getMovie = async (title, year) => {
             actors: body.Actors,
             plot: body.Plot,
             ratings: body.Ratings,
-        });
+        };
 
         return save({...movie});
     }

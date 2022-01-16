@@ -1,5 +1,5 @@
 const Router = require("@koa/router");
-const {getMovie, getAllMovie, searchAndUpdateByTitle} = require("../service/Movie.service");
+const {getMovie, getAllMovie, searchAndUpdateByTitle} = require("../service/Movies.service");
 
 const router = new Router({
     prefix: "/movies"
